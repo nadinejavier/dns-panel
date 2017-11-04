@@ -1,6 +1,5 @@
 class DomainsController < ApplicationController
   skip_before_action :verify_authenticity_token
-  require 'unirest'
   def new
   end
 
@@ -18,8 +17,7 @@ class DomainsController < ApplicationController
 
   def show
     domain = Domain.find(params[:id])
-    domain = Unirest.get(("https://api.nsone.net/v1/zones/purplehippo.com"),
-                          headers: {"X-NSONE-Key: rbbHOCTReyhS4oH926M2"})
-    @domain = domain.body
+    @domain = Unirest.get "https://api.nsone.net/v1/zones/#{domain.domain_name}.json", 
+                        :headers => { "X-NSONE-Key" => "rbbHOCTReyhS4oH926M2" } 
   end 
 end

@@ -88,4 +88,5 @@ Rails.application.configure do
 
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
+  Unirest.default_header('X-NSONE-Key','rbbHOCTReyhS4oH926M2')
 end
