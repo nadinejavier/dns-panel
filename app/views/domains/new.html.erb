@@ -1,0 +1,8 @@
+Add New Domain
+
+<%= form_tag '/domains', method: :post do %> 
+  <div>
+    <%= text_field_tag :domain_name, nil, placeholder: "Domain Name" %>
+  </div>
+  <%= submit_tag "Create" %>
+<% end %>
