@@ -1,5 +1,10 @@
 class DomainsController < ApplicationController
   skip_before_action :verify_authenticity_token
+  before_action :authenticate_user!
+  def index
+    @domains = Domain.where(user_id: current_user.id)
+  end
+
   def new
   end
 
@@ -17,7 +22,12 @@ class DomainsController < ApplicationController
 
   def show
     domain = Domain.find(params[:id])
-    @domain = Unirest.get "https://api.nsone.net/v1/zones/#{domain.domain_name}.json", 
-                        :headers => { "X-NSONE-Key" => "rbbHOCTReyhS4oH926M2" } 
+    @domain = Unirest.get("https://api.nsone.net/v1/zones/#{domain.domain_name}",
+                          headers: { "X-NSONE-Key" => "rbbHOCTReyhS4oH926M2" })
   end 
+
+
+
 end
+
+
