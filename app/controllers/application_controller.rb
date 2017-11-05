@@ -4,4 +4,10 @@ class ApplicationController < ActionController::Base
 end
 
 
-# curl -X PUT -H 'X-NSONE-Key: rbbHOCTReyhS4oH926M2' -d '{"zone":"purplehippotwo.com", "domain":"linked-record.example.com", "type":"A", "link":"arecord.example2.com", "answers": []}' https://api.nsone.net/v1/zones/example.com/linked-record.example.com/A
+
+
+#To add record
+
+# curl -X PUT -H 'X-NSONE-Key: rbbHOCTReyhS4oH926M2' -d '{"zone":"purplehippotwo.com", "domain":"purplehippotwo.com", "type":"A", "answers":[{"answer":["1.2.3.4"]}]}' https://api.nsone.net/v1/zones/purplehippotwo.com/purplehippotwo.com/A
+
+
