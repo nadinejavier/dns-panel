@@ -35,9 +35,16 @@ class ARecordsController < ApplicationController
   end
 
   def update
+    a_record = ARecord.find(params[:id])
     response = Unirest.post("#{ENV['API_ROOT_URL']}/#{domain.domain_name}/#{domain.domain_name}/A
                               ", headers: HEADERS,
                                 parameters: { answers: [{answer: ["#{params[:ip_address]}"]}] }.to_json)
+    if response.status == 200
+      a_record.update(ip_address: params[:ip_address])
+      redirect_to domain_a_record_path(domain_a_record)
+    else
+      render :edit
+    end
   end
 
   def destroy

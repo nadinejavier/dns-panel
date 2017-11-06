@@ -47,14 +47,14 @@ class DomainsController < ApplicationController
     end
   end
 
-  def delete
+  def destroy
     domain = Domain.find(params[:id])
     a_records = domain.a_records
     if domain.user_id == current_user.id
       response = Unirest.delete("#{ENV['API_ROOT_URL']}/#{domain.domain_name}",
                           headers: HEADERS)
         if response.code == 200
-          a_records.delete && domain.delete
+          a_records.destroy && domain.destroy
           redirect_to domain_path(domains) 
         end
     else

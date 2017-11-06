@@ -10,6 +10,7 @@ To implement a DNS panel, I wanted to just start with having the user be able to
 Based on NS1's platform, adding a new domain name equates to creating a new zone. So when a user adds a domain name to my panel, it will first make a PUT request to the NS1 api to create a zone with just the zone name as the parameters. If the request gives back a status code of 200, code for creating an instance of a domain will execute and persist into the database. This is similar to adding new records to the domain, the domain name will be interpolated to the API request url for both zone name and domain name, then if the request is successful, would be added into the database.
 
 ```ruby 
+#Domain Controller
   def create
     response = Unirest.put("#{ENV['API_ROOT_URL']}/#{params[:domain_name]}", 
                         headers: HEADERS, 
@@ -36,7 +37,7 @@ To validate to the user that their configuration is correct, I decided to show t
   end 
 ```
 
-When the user decides to change their domain name, the system will be making another PUT request to add an ALIAS record, which NS1 provides. Since the zone name in NS1 can not be changed, the ALIAS records can be used since it can be placed in the root domain and links it to other domains. To update a record like the 'A' record, a request to update record configurations will under the update method in the record's controller, and will contain a new answer in the parameters. When the request is successful, the same value of the parameters will update in the database.
+When the user decides to change their domain name, the system will be making another PUT request to add an ALIAS record, which NS1 provides. Since the zone name in NS1 can not be changed, the ALIAS records can be used since it can be placed in the root domain and links it to other domains. To update a record like the 'A' record, a request to update record configurations will be under the update method in the record's controller, and will contain a new answer in the parameters. When the request is successful, the same value of the parameters will update in the database.
 
 ```ruby
   def update
@@ -58,29 +59,52 @@ When the user decides to change their domain name, the system will be making ano
   end
 ```
 ```ruby
+#Update 'A' record
   def update
+    a_record = ARecord.find(params[:id])
     response = Unirest.post("#{ENV['API_ROOT_URL']}/#{domain.domain_name}/#{domain.domain_name}/A
                               ", headers: HEADERS,
                                 parameters: { answers: [{answer: ["#{params[:ip_address]}"]}] }.to_json)
+    if response.status == 200
+      a_record.update(ip_address: params[:ip_address])
+      redirect_to domain_a_record_path(domain_a_record)
+    else
+      render :edit
+    end
   end
 ```
-
 It is the same logic for deleting both domains and records, the request is made first, and if its successful it will delete in the database with the records being destroyed before the domain.
 
 ```ruby
-
-  def delete
+#deleting a domain
+  def destroy
     domain = Domain.find(params[:id])
     a_records = domain.a_records
     if domain.user_id == current_user.id
       response = Unirest.delete("#{ENV['API_ROOT_URL']}/#{domain.domain_name}",
                           headers: HEADERS)
         if response.code == 200
-          a_records.delete && domain.delete
+          a_records.destroy && domain.destroy
           redirect_to domain_path(domains) 
         end
     else
       redirect_to domain_path(domain) 
+    end
+  end
+```
+```ruby
+#deleting record
+  def destroy
+    a_record = ARecord.find(params[:id])
+    if current_user.id == a_record.user_id
+      response = Unirest.delete("#{ENV['API_ROOT_URL']}/#{a_record.domain.domain_name}/#{a_record.domain.domain_name}/A", headers: HEADERS)
+      if response.code == 200
+        a_record.destroy
+      else
+        redirect_to domain_a_record_path(domain_a_record)
+      end
+    else
+    redirect_to domain_path(domain)
     end
   end
 ```
