@@ -1,0 +1,2 @@
+module ARecordsHelper
+end
