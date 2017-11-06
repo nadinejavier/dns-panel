@@ -12,7 +12,7 @@ class ARecordsController < ApplicationController
                                               domain:"#{domain.domain_name}",
                                               type: "A",
                                               answers: [{answer: ["#{params[:ip_address]}"]}] }.to_json)
-      if response.code == 200 || 204
+      if response.code == 200 
         @a_record = ARecord.create(ip_address: params[:ip_address], 
                                    domain_id: domain.id,
                                    user_id: current_user.id )
@@ -44,7 +44,7 @@ class ARecordsController < ApplicationController
     a_record = ARecord.find(params[:id])
     if current_user.id == a_record.user_id
       response = Unirest.delete("#{ENV['API_ROOT_URL']}/#{a_record.domain.domain_name}/#{a_record.domain.domain_name}/A", headers: HEADERS)
-      if response.code == 200 || 204
+      if response.code == 200
         a_record.destroy
       else
         redirect_to domain_a_record_path(domain_a_record)

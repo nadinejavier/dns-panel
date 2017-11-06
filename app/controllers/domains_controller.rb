@@ -32,13 +32,13 @@ class DomainsController < ApplicationController
   def update
     #request creates ALIAS record to NS1
     domain = Domain.find(params[:id])
-    response = Unirest.put("#{ENV['API_ROOT_URL']}/#{domain.domain_name}/#{domain.domain_name}/A
+    response = Unirest.put("#{ENV['API_ROOT_URL']}/#{domain.domain_name}/#{domain.domain_name}/ALIAS
                         ", headers: HEADERS,
                            parameters: { zone: "#{domain.domain_name}", 
                                          domain:"#{domain.domain_name}",
                                           type: "ALIAS",
                                           answers: [{answer: ["#{params[:domain_name]}"]}] }.to_json)
-    if response.code == 200 || 204
+    if response.code == 200 
       domain.update(domain_name: params[:domain_name])
       redirect_to domain_path(domain)
     else
@@ -53,12 +53,12 @@ class DomainsController < ApplicationController
     if domain.user_id == current_user.id
       response = Unirest.delete("#{ENV['API_ROOT_URL']}/#{domain.domain_name}",
                           headers: HEADERS)
-        if response.code == 200 || 204
+        if response.code == 200
           a_records.delete && domain.delete
-          redirect_to domain_path(domains) #domain successfully deleted
+          redirect_to domain_path(domains) 
         end
     else
-      redirect_to domain_path(domain)
+      redirect_to domain_path(domain) 
     end
   end
 
