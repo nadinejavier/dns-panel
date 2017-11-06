@@ -1,0 +1,8 @@
+<h5> Add new 'A' Record </h5>
+
+<%= form_tag domain_a_records_path,  method: :post do  %>
+  <div>
+    <%= text_field_tag :ip_address%>
+  </div>
+  <%= submit_tag "Submit" %>
+<% end %> 

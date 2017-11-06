@@ -1,0 +1,9 @@
+Edit Domain Name
+
+<%= form_tag "/domains/#{@domain.id}", method: :patch do %> 
+  <div>
+    <%= text_field_tag :domain_name, nil, placeholder: "Domain Name" %>
+  </div>
+  <%= submit_tag "Submit" %>
+<% end %>
+

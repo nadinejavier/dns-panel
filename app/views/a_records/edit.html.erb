@@ -1,0 +1,8 @@
+Edit 'A' Record
+
+<%= form_tag "/domains/#{@domain.id}", method: :patch do %> 
+  <div>
+    <%= text_field_tag :ip_address, nil, placeholder: "New Value" %>
+  </div>
+  <%= submit_tag "Submit" %>
+<% end %>

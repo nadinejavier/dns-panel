@@ -1,5 +1,14 @@
 Welcome <%= @user.email %>
 <br>
+<br>
+<h6> Your domains: </h6>
+  <% @user.domains.each do |domain| %>
+    <a href="/domains/<%= domain.id %>"> <%= domain.domain_name %> </a>
+  <% end %>
+<br>
+<br>
+<br>
 <a href="/domains/new"> Register new domain </a>
+<br>
 <a href="/logout"> Log out </a>
 

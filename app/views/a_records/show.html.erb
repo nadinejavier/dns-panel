@@ -1,0 +1,12 @@
+<h3> 'A' Record for <%= @a_record.domain.domain_name %> </h3>
+<br>
+<br>
+<%= @a_record.ip_address %>
+<br>
+<br>
+<a href="/domains/<%=@a_record.domain_id%>/a_records/<%=@a_record.id%>/edit">Edit Record </a>
+<br>
+<%= form_tag "/domains/#{params[:domain_id]}/a_records/#{@a_record.id}", method: :delete do %>
+    <button type ="submit">Delete Record</button>
+<% end %>
+
