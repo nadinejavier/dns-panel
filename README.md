@@ -53,7 +53,6 @@ When the user decides to change their domain name, the system will be making ano
       domain.update(domain_name: params[:domain_name])
       redirect_to domain_path(domain)
     else
-      #error: domain was not successfully changed
       render :edit
     end
   end
@@ -111,8 +110,8 @@ It is the same logic for deleting both domains and records, the request is made 
 
 What I would have done with more time:
 
-1) If I had more time, I would have thought harder about a better strategy in the quesiton of updating records and handling domain changes. With my amount of knowledge with DNS I feel that I didn't come up with the most productive solution.
-2) Having the requests to work and the overall app to work. I had trouble with authorization with my requests, but I tried to focus more on coming up with the solutions and strategies to be implemented. This code does not execute a working product, and is more of a pseudo code.
+1) If I had more time, I would have thought harder and done more research about a better strategy in the quesiton of updating records and handling domain changes. With my amount of knowledge with DNS I feel that I didn't come up with the most productive solution.
+2) Having the requests and the overall app to work. I had trouble with authorization with my requests, but I tried to focus more on coming up with the solutions and strategies to be implemented. This code does not execute a working product, and is more of a pseudo code.
 3) Security and refactoring.
 
 
